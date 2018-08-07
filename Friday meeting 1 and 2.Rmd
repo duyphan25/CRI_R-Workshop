@@ -1,0 +1,178 @@
+---
+title: "Friday meeting"
+author: "Duy Phan"
+date: "June 22, 2018"
+output: html_document
+---
+
+Setting working directory
+```{r}
+setwd("D:Box Sync/5. Summer 2018/CRI Summer 2018/R/Friday meeting")
+```
+Basic calculator. Use Crtl + enter to run selected lines
+```{r}
+5+5
+10/5
+(10*2+6/80)^3
+```
+Assign variable
+```{r}
+a = 5
+b = 10
+a
+b
+a/b
+a^b
+a*b
+```
+Assign letters and phrases as well, but need to use quotatation.
+```{r}
+R = "R Rules SPSS drools!!"
+R
+```
+R has several different types of data that variable can be. We will review interger, double, and factor.
+
+Integers and double are basically the same and contain only numbers: however double accounts for variables with decimals.
+Using "c" means concatenate and is one way to combine elements like number in R.
+
+Round up number in R
+```{r}
+integer = as.integer(c(2,4,5,6))
+typeof(integer)
+double = c(4.5,6.5,9,10)
+typeof(double)
+typeof(a)
+typeof(R)
+doubleround = round(double, 0)
+doubleround
+```
+Factors can be either be numbers or words. For example, a gender factor
+couble be maile, female, another gender identity, or 0,1,2.
+If gender is numbers, you will want to tell R that the gender is a factor by making it a factor using the as.factor and overwriting the variable (or making a new variable).
+If your variable is coded as words, you can change the reference level (i.e. the word that is alphabetically first) by using the relevel function and setting a new reference level.
+```{r}
+genderNumber = as.factor(c(0,1,2))
+genderNumber
+
+genderWords = as.factor(c("Male", "Female", "Another gender identity"))
+genderWords
+
+genderWords = relevel (genderWords, ref = "Female")
+genderWords
+```
+There are several different data types in R as well. We will cover vectors, matrices, data frames.
+
+We have mostly been dealing with vectors so far. They are one row of dat. You can add them and each element will be added to the corresponding element.
+```{r}
+vector_var1 = as.vector(c(2,3,45))
+vector_var1
+
+vector_var2 = as.vector(c(5,4,3))
+vector_var2
+
+vector_var12 = vector_var1 + vector_var2; vector_var12
+```
+We can combine vectors to create matrices. You will need to specify the number of rows and columns. Given that we have two variables there should be two columns and three rows because each vectors as three data points. Vectors with differing numbers of rows cannot be combined. to subset the data you can use []
+```{r}
+matrix_example = c(1:10); matrix_example
+matrix_example = matrix(matrix_example, nrow =5, ncol =2); matrix_example
+#Rows
+matrix_example[1,]
+#Columns
+matrix_example[,1]
+#Both
+matrix_example[1,2]
+```
+The most common data type you all will be working with is data frame. Data frames need variable names. 
+You can use the $ to get the variables, use the matrix notation, or use attach and just use the actual name.
+
+(!) Attach function to set variable as objects. 
+```{r}
+data.frame.names = data.frame(var1 = c(1,2,3), var2 = c(4,1,6))
+data.frame.names
+
+data.frame.names$var2
+data.frame.names[,2]
+
+attach(data.frame.names)
+var1
+var2
+
+```
+You can also use logical operations like you would in excel
+```{r}
+var1 > var2
+var1 == var2
+var2 >= var1
+```
+The first thing you want to do is et the working directory. This tells R where you want to read in and store data
+```{r}
+setwd("D:/Box Sync/5. Summer 2018/CRI Summer 2018/R/Friday meeting")
+write.csv(data.frame.names, "data.frame.names.csv", row.names= FALSE)
+data.frame.names = read.csv("data.frame.names.csv", header = TRUE, na.strings = c("na"," "))
+data.frame.names
+```
+To get some summary statistics we will need some different statistical packages. This means we need to use the install.packages funcstion to install the psych and prettyR packages and then library them.
+
+You can also get summary statistics fairly quickly 
+
+WEEK 2
+
+Homework: Loading a data set into R. What questions do you all have?
+
+Brief review
+
+Creating data frames and extracting data from the data frames. Data frames put the variables into a form that we are used to where we have the variable names on the top row and "people" or data points for each variable below each variable. Remember that when we are creating variables and we want to include multiple data points, we need to use c() with commas to seperate them. We need to use the data.frame to turn a data set into a data frame.
+
+When we have a data frame, we can access the variables inside the data frame using the $ or [].
+```{r}
+datReview = data.frame(a=c(1,2,3), b = c(4,5,6))
+datReview[,1]
+datReview$a
+```
+```{r}
+ordVar = c(1,2,3,4,5)
+binVar = c(0,1)
+set.seed(123)
+datWeekTwo = data.frame(outcome1 = rnorm(100), outcome2 = rnorm(100), satisfaction = sample(ordVar, 100, replace = TRUE), gender = sample(binVar, 100, replace = TRUE))
+datWeekTwo[1:10,1] = NA
+datWeekTwo[11:15,2] = -99
+datWeekTwo
+```
+The first thing you want to do is set the working directory. This tells R where you want to read in and store data sets. Go to the session, set working directory, then choose the working directory. Then you can copy that path into the code so you don't have to do that every time.
+
+***** I am working on a mac so make sure you don't copy and paste the setwd directly from this page and you actually find the specific file path for your computer if you have a PC.
+
+Let's first export the data set that we have to a csv file because that is the easiest file to work with. We can use the write.csv function to do that. Row names are likely to be false.
+
+Then you can read the csv file using the read.csv function. Most of the time the first row in the dataset will be the variable names, so you will need to set the header to be true.
+
+Sometimes you have multiple values that signal a value is NA (e.g. -99, -77). To load all the possible NA values into R and turn them all into NA's use the na.strings function and concatinate the list of values using c() and put each character (i.e. non-integer) in quotation marks and each value should be separated by a comma.
+
+For data that is left blank you can use the " " with one space. Matt provide example during workshop.
+
+If you want to get rid of missing values you can use the na.omit function. This function deletes any row that has at least one missing value for at least one variable.
+
+```{r}
+setwd("D:/Box Sync/5. Summer 2018/CRI Summer 2018/R/Friday meeting")
+write.csv(datWeekTwo, "datWeekTwo.csv", row.names = FALSE)
+
+datWeekTwo = read.csv("datWeekTwo.csv", header = TRUE, na.strings = c("NA", -99, " ","missing"))
+datWeekTwo
+datWeekTwo = na.omit(datWeekTwo)
+datWeekTwo
+```
+Install packages
+```{r}
+#install.packages("psych")
+#install.packages("prettyR")
+#install.packages("descr")
+library(descr)
+library(psych)
+library(prettyR)
+summary(datWeekTwo)
+describe(datWeekTwo)
+describe.factor(datWeekTwo$gender)
+describe.factor(datWeekTwo$satisfaction, decr.order = FALSE)
+```
+

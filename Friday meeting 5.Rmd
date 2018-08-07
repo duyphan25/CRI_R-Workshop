@@ -1,0 +1,56 @@
+---
+title: "Friday meeting 5"
+author: "Duy Phan"
+date: "July 20, 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Instruction link: http://rpubs.com/mhanauer/404665
+
+Creating random data and creating function
+```{r}
+set.seed(1234)
+prePHQ9 = rnorm(100, mean = 1.7, sd = 1)
+postPHQ9 = rnorm(100, m = 2, sd = 1)
+pChange = function(pre,post){
+  round(mean((post-pre)/pre),2)
+}
+pChange(prePHQ9, postPHQ9)
+pChange(post = postPHQ9, pre = prePHQ9)
+```
+Creat Formulla for standard deviation
+
+```{r}
+
+```
+
+
+Creating histogram of a normal distribution
+```{r}
+normVar = rnorm(10000, mean = 0, sd = 1)
+hist(normVar)
+```
+Creat a histogram of a non-normal ditribution
+```{r}
+non_normVar = rpois(10000, 3)
+hist(non_normVar)
+```
+
+```{r}
+z = (0--10)/3
+z
+```
+
+Look up p value
+
+```{r}
+pnorm(z)
+1-prnorm(z)
+2*(1-pnorm(z))
+
+```
+
